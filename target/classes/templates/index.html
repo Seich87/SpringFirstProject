@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>UserManageSystem</title>
+</head>
+<body>
+<a th:href="@{/showNewTaskForm}">Add Task</a>
+<table border="1">
+    <thead>
+        <th>
+            <a th:href="@{'/page/' + ${currentPage} + '?sortField=description&sortDir=' + ${reversSortDir}}">description</a>
+        </th>
+
+        <th>
+            <a th:href="@{'/page/' + ${currentPage} + '?sortField=status&sortDir=' + ${reversSortDir}}">status</a>
+        </th>
+        <th>
+            <a>Action</a>
+        </th>
+    </thead>
+
+    <tbody>
+        <tr th:each="task : ${listTasks}">
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.status}"></td>
+            <td>
+                <a th:href="@{/showFormForUpdate/{id}(id=${task.id})}">Update</a>
+                <a th:href="@{/deleteForm/{id}(id=${task.id})}">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <div>
+        Total rows : [[${totalItems}]]
+    </div>
+
+    <div>
+        <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+            <a th:unless="${currentPage != i}">[[${i}]]</a>
+        </span>
+    </div>
+    <div>
+        <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+        <a th:unless="${currentPage < totalPages}">Next</a>
+    </div>
+<div>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+    <a th:unless="${currentPage < totalPages}">Last</a>
+</div>
+</body>
+
+</html>
